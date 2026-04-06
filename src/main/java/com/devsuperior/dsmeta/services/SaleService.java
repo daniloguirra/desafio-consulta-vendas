@@ -1,5 +1,6 @@
 package com.devsuperior.dsmeta.services;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,7 +24,9 @@ public class SaleService {
 	}
 
 	public List<SaleMinDTO> getReport() {
-		List<Sale> result = repository.findAll();
+		LocalDate today = LocalDate.now();
+		LocalDate start = today.minusMonths(12);
+		List<Sale> result = repository.findByDateBetweenOrderByIdAsc(start, today);
 		return result.stream().map(x -> new SaleMinDTO(x)).toList();
 	}
 
