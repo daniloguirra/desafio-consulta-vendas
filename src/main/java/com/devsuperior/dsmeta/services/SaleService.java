@@ -1,6 +1,8 @@
 package com.devsuperior.dsmeta.services;
 
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,11 +25,14 @@ public class SaleService {
 		return new SaleMinDTO(entity);
 	}
 
-	public List<SaleMinDTO> getReport() {
-		LocalDate today = LocalDate.now();
-		LocalDate start = today.minusMonths(12);
-		List<Sale> result = repository.findByDateBetweenOrderByIdAsc(start, today);
-		return result.stream().map(x -> new SaleMinDTO(x)).toList();
+	public List<SaleMinDTO> getReport(LocalDate minDate, LocalDate maxDate, String name) {
+		LocalDate today = LocalDate.ofInstant(Instant.now(), ZoneId.systemDefault());
+		LocalDate effectiveMax = maxDate != null ? maxDate : today;
+		LocalDate effectiveMin = minDate != null ? minDate : effectiveMax.minusYears(1L);
+		String nameParam = (name != null && !name.isBlank()) ? name.trim() : null;
+
+		List<Sale> sales = repository.searchReport(effectiveMin, effectiveMax, nameParam);
+		return sales.stream().map(SaleMinDTO::new).toList();
 	}
 
 }
