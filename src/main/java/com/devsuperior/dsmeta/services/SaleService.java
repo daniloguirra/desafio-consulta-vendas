@@ -1,5 +1,6 @@
 package com.devsuperior.dsmeta.services;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,4 +21,10 @@ public class SaleService {
 		Sale entity = result.get();
 		return new SaleMinDTO(entity);
 	}
+
+	public List<SaleMinDTO> getReport() {
+		List<Sale> result = repository.findAll();
+		return result.stream().map(x -> new SaleMinDTO(x)).toList();
+	}
+
 }
