@@ -1,45 +1,31 @@
 package com.devsuperior.dsmeta.dto;
 
-import com.devsuperior.dsmeta.entities.Seller;
-
 public class SellerMinDTO {
 
-    private Long id;
-	private String name;
-	private String email;
-	private String phone;
+	private String sellerName;
+	private Double total;
 
-    public SellerMinDTO(Long id, String name, String email, String phone) {
-        this.id = id;
-        this.name = name;
-        this.email = email;
-        this.phone = phone;
-    }
+	public SellerMinDTO() {
+	}
 
-    public SellerMinDTO(Seller entity) {
-        id = entity.getId();
-        name = entity.getName();
-        email = entity.getEmail();
-        phone = entity.getPhone()   ;
-    }
+	public SellerMinDTO(String sellerName, Double total) {
+		this.sellerName = sellerName;
+		this.total = total;
+	}
 
-    public Long getId() {
-        return id;
-    }
+	public String getSellerName() {
+		return sellerName;
+	}
 
-    public String getName() {
-        return name;
-    }
+	public void setSellerName(String sellerName) {
+		this.sellerName = sellerName;
+	}
 
-    public String getEmail() {
-        return email;
-    }
+	public Double getTotal() {
+		return total;
+	}
 
-    public String getPhone() {
-        return phone;
-    }
-
-
-    
-    
+	public void setTotal(Double total) {
+		this.total = total;
+	}
 }

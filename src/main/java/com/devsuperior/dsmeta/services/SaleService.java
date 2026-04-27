@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.devsuperior.dsmeta.dto.SaleMinDTO;
+import com.devsuperior.dsmeta.dto.SellerMinDTO;
 import com.devsuperior.dsmeta.entities.Sale;
 import com.devsuperior.dsmeta.repositories.SaleRepository;
 
@@ -33,6 +34,14 @@ public class SaleService {
 
 		List<Sale> sales = repository.searchReport(effectiveMin, effectiveMax, nameParam);
 		return sales.stream().map(SaleMinDTO::new).toList();
+	}
+
+	public List<SellerMinDTO> getSummary(LocalDate minDate, LocalDate maxDate) {
+		LocalDate today = LocalDate.ofInstant(Instant.now(), ZoneId.systemDefault());
+		LocalDate effectiveMax = maxDate != null ? maxDate : today;
+		LocalDate effectiveMin = minDate != null ? minDate : effectiveMax.minusYears(1L);
+
+		return repository.searchSummary(effectiveMin, effectiveMax);
 	}
 	
 

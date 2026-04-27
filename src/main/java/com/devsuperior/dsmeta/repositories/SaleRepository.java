@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import com.devsuperior.dsmeta.dto.SellerMinDTO;
 import com.devsuperior.dsmeta.entities.Sale;
 
 public interface SaleRepository extends JpaRepository<Sale, Long> {
@@ -16,5 +17,13 @@ public interface SaleRepository extends JpaRepository<Sale, Long> {
 			+ "ORDER BY obj.id ASC")
 	List<Sale> searchReport(@Param("minDate") LocalDate minDate, @Param("maxDate") LocalDate maxDate,
 			@Param("name") String name);
+
+	@Query("SELECT new com.devsuperior.dsmeta.dto.SellerMinDTO(s.seller.name, SUM(s.amount)) "
+			+ "FROM Sale s "
+			+ "WHERE s.date BETWEEN :minDate AND :maxDate "
+			+ "GROUP BY s.seller.id, s.seller.name "
+			+ "ORDER BY s.seller.name")
+	List<SellerMinDTO> searchSummary(
+			@Param("minDate") LocalDate minDate, @Param("maxDate") LocalDate maxDate);
 
 }
