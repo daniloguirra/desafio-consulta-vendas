@@ -16,4 +16,5 @@ public interface SaleRepository extends JpaRepository<Sale, Long> {
 			+ "ORDER BY obj.id ASC")
 	List<Sale> searchReport(@Param("minDate") LocalDate minDate, @Param("maxDate") LocalDate maxDate,
 			@Param("name") String name);
+
 }

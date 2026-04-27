@@ -34,5 +34,6 @@ public class SaleService {
 		List<Sale> sales = repository.searchReport(effectiveMin, effectiveMax, nameParam);
 		return sales.stream().map(SaleMinDTO::new).toList();
 	}
+	
 
 }
