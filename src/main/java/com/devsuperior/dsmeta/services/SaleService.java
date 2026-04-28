@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
@@ -27,14 +29,14 @@ public class SaleService {
 		return new SaleMinDTO(entity);
 	}
 
-	public List<SaleMinDTO> getReport(LocalDate minDate, LocalDate maxDate, String name) {
+	public Page<SaleMinDTO> getReport(LocalDate minDate, LocalDate maxDate, String name, Pageable pageable) {
 		LocalDate today = LocalDate.ofInstant(Instant.now(), ZoneId.systemDefault());
 		LocalDate effectiveMax = maxDate != null ? maxDate : today;
 		LocalDate effectiveMin = minDate != null ? minDate : effectiveMax.minusYears(1L);
 		String nameParam = (name != null && !name.isBlank()) ? name.trim() : null;
 
-		List<Sale> sales = repository.searchReport(effectiveMin, effectiveMax, nameParam);
-		return sales.stream().map(SaleMinDTO::new).toList();
+		Page<Sale> sales = repository.searchReport(effectiveMin, effectiveMax, nameParam, pageable);
+		return sales.map(SaleMinDTO::new);
 	}
 
 	public List<SellerMinDTO> getSummary(LocalDate minDate, LocalDate maxDate) {

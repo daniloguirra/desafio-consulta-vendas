@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,13 +32,14 @@ public class SaleController {
 	}
 
 	@GetMapping(value = "/report")
-	public ResponseEntity<List<SaleMinDTO>> getReport(
+	public ResponseEntity<Page<SaleMinDTO>> getReport(
 		@RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate minDate,
 		@RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate maxDate,
-		@RequestParam(required = false) String name) {
+		@RequestParam(required = false) String name,
+		Pageable pageable) {
 
-		List<SaleMinDTO> list = service.getReport(minDate, maxDate, name);
-		return ResponseEntity.ok(list);
+		Page<SaleMinDTO> page = service.getReport(minDate, maxDate, name, pageable);
+		return ResponseEntity.ok(page);
 	}
 
 	@GetMapping(value = "/summary")
